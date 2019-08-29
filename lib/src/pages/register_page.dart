@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:formvalidation/src/bloc/provider.dart';
 import 'package:formvalidation/src/providers/user_provider.dart';
-import 'package:formvalidation/src/utils/utils.dart';
 
-class LoginPage extends StatelessWidget {
+class RegisterPage extends StatelessWidget {
   final userProvider = new UserProvider();
 
   @override
@@ -98,7 +97,7 @@ class LoginPage extends StatelessWidget {
             ),
             child: Column(
               children: <Widget>[
-                Text('Ingreso', style: TextStyle(fontSize: 20.0),),
+                Text('Crear cuenta', style: TextStyle(fontSize: 20.0),),
                 _createEmail(bloc),
                 SizedBox(height: 30.0),
                 _createPassword(bloc),
@@ -108,8 +107,8 @@ class LoginPage extends StatelessWidget {
             ),
           ),
           FlatButton(
-            child: Text('¿Olvido la contraseña?'),
-            onPressed: () => Navigator.pushReplacementNamed(context, 'register'),
+            child: Text('¿Ya tienes una cuenta? Login'),
+            onPressed: () => Navigator.pushReplacementNamed(context, 'login'),
           ),
           SizedBox(height: 100.0,)
         ],
@@ -178,32 +177,27 @@ class LoginPage extends StatelessWidget {
         return RaisedButton(
           child: Container(
             padding: EdgeInsets.symmetric(horizontal: 80.0, vertical: 15.0),
-            child: Text('Ingresar', style: TextStyle(color: Colors.white),),
+            child: Text('Registrarme', style: TextStyle(color: Colors.white),),
             ),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
           elevation: 0.0,
           color: Colors.deepPurple,
-          onPressed: snapshot.hasData ? () => _login(context, loginBloc) : null
+          onPressed: snapshot.hasData ? () => _register(context, loginBloc) : null
         );
       },
     );
 
   }
 
-  _login(BuildContext context, LoginBloc loginBloc) async {
+  _register(BuildContext context, LoginBloc loginBloc) {
     // print('=============');
     // print('email: ${loginBloc.email}');
     // print('password: ${loginBloc.password}');
     // print('=============');
-    Map info = await userProvider.login(loginBloc.email, loginBloc.password);
 
-    if(info['ok']) {
-      Navigator.pushReplacementNamed(context, 'home');
-    } else {
-      // Mostramos alerta
-      showAlert(context, info['message']);
-    }
-
+    userProvider.newUser(loginBloc.email, loginBloc.password);
+    
+    // Navigator.pushReplacementNamed(context, 'home');
   }
 
 
