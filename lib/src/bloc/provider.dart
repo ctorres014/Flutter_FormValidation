@@ -1,11 +1,15 @@
 
 import 'package:flutter/material.dart';
 import 'package:formvalidation/src/bloc/login_bloc.dart';
+import 'package:formvalidation/src/bloc/products_bloc.dart';
 // Añadimos el export para poder hacer referencia LoginBloc
 export 'package:formvalidation/src/bloc/login_bloc.dart';
+export 'package:formvalidation/src/bloc/products_bloc.dart';
 
 
 class Provider extends InheritedWidget {
+  final loginBloc = LoginBloc();
+  final _productsBloc = ProductBloc();
 
   // Implementamos el patron singleton para evitar perder los datos
   // en el caso de realizar un hotreload
@@ -24,7 +28,6 @@ class Provider extends InheritedWidget {
    : super( key: key, child: child);
 
 
-  final loginBloc = LoginBloc();
 
   // Provider({ Key key, Widget child}) 
   //  : super( key: key, child: child);
@@ -35,6 +38,10 @@ class Provider extends InheritedWidget {
   // Buscara internamente en el arbol de widget y retornara la instancia del bloc
   static LoginBloc of (BuildContext context) {
     return (context.inheritFromWidgetOfExactType(Provider) as Provider).loginBloc;
+  }
+
+  static ProductBloc productsBloc (BuildContext context) {
+    return (context.inheritFromWidgetOfExactType(Provider) as Provider)._productsBloc;
   }
 
 
